@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import static util.BitonicSortUtil.*;
 
 /**
@@ -35,6 +37,32 @@ public class BitonicSort {
         result.setResultArray(list);
 
         long startTime = System.nanoTime();
+
+        ProcessingNode[] processingNodes = new ProcessingNode[PROCESSING_NODES];
+        int totalCount = 0;
+        for (int i = 0; i < PROCESSING_NODES - 1; i++) {
+            // Create the given number of processing nodes and section of the list that is being sorted
+            processingNodes[i] = new ProcessingNode(list, (list.length / PROCESSING_NODES) * i, list.length / PROCESSING_NODES);
+            totalCount += list.length / PROCESSING_NODES;
+        }
+        // This last node will take all the remaining values, which should be around
+        // list.length / processing_nodes, but could be more or less because of integer division
+        processingNodes[PROCESSING_NODES - 1] =
+                new ProcessingNode(list, (list.length / PROCESSING_NODES) * (PROCESSING_NODES - 1), list.length - totalCount);
+
+        for (int i = 0; i < PROCESSING_NODES; i++) {
+            // Run all the processing nodes
+            new Thread(processingNodes[i]).start();
+        }
+
+        for (int i = 0; i < PROCESSING_NODES; i++) {
+            while (!processingNodes[i].isDone()){
+                // Wait for the node to finish processing data
+            }
+        }
+
+        // Merge nodes together
+        mergeNodes(list, 0, list.length, 1);
 
         long endTime = System.nanoTime();
 
@@ -112,6 +140,7 @@ public class BitonicSort {
                                 printUsage();
                                 return;
                             }
+                            System.out.println("Using " + PROCESSING_NODES + " processing nodes...");
                             break;
                         // -o option
                         case 'o':
@@ -134,8 +163,7 @@ public class BitonicSort {
             long totalTime = 0;
             for (int i = 0; i < timesToRepeat; i++) {
                 Result result = parallelBitonicSort(randomArray(size));
-                System.out.println("Using " + PROCESSING_NODES + " processing nodes...");
-                System.out.println("Runtime of array of size " + size + ": " + result.getRuntime() + " ns (" + (result.getRuntime() / 1000000) + " ms)");
+                System.out.println("Parallel runtime of array of size " + size + ": " + result.getRuntime() + " ns (" + (result.getRuntime() / 1000000) + " ms)");
                 if (outputResult){
                     // Print resulting array
                     printArray(result.getResultArray());
@@ -149,7 +177,7 @@ public class BitonicSort {
             long totalTime = 0;
             for (int i = 0; i < timesToRepeat; i++) {
                 Result result = serialBitonicSort(randomArray(size));
-                System.out.println("Runtime of array of size " + size + ": " + result.getRuntime() + " ns (" + (result.getRuntime() / 1000000) + " ms)");
+                System.out.println("Serial runtime of array of size " + size + ": " + result.getRuntime() + " ns (" + (result.getRuntime() / 1000000) + " ms)");
                 if (outputResult){
                     // Print resulting array
                     printArray(result.getResultArray());
