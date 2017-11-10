@@ -6,10 +6,16 @@ package util;
  * @author Brandon Bires-Navel (brandonnavel@outlook.com)
  */
 public class BitonicSortUtil {
+
+    /**
+     * Create a primitive double array with random values
+     * @param size - size of the array
+     * @return reference to an array with random values
+     */
     public static double[] randomArray(int size){
         double[] array = new double[size];
         for (int i = 0; i < size; i++) {
-            array[i] = Math.random() * 100;
+            array[i] = Math.random() * 5000;
         }
         return array;
     }
@@ -38,10 +44,10 @@ public class BitonicSortUtil {
     }
 
     /**
-     * TODO
-     * @param list
-     * @param low
-     * @param count
+     * Recursive Bitonic sort
+     * @param list - reference to list to sort
+     * @param low - index representing the lower bound
+     * @param count - number of array elements to sort after the low index
      * @param direction - int representing whether to sort ascending or descending
      *                  1 for ascending
      *                  0 for descending
@@ -56,11 +62,13 @@ public class BitonicSortUtil {
     }
 
     /**
-     *
-     * @param list
-     * @param low
-     * @param count
-     * @param direction
+     * Parallel merge function
+     * @param list - reference to list to merge
+     * @param low - index representing the lower bound
+     * @param count - number of array elements to sort after the low index
+     * @param direction - int representing whether to sort ascending or descending
+     *                  1 for ascending
+     *                  0 for descending
      */
     public static void mergeNodes(double list[], int low, int count, int direction){
         if (count > 1){
@@ -72,10 +80,10 @@ public class BitonicSortUtil {
     }
 
     /**
-     * TODO
-     * @param list - reference to the list
-     * @param low
-     * @param count
+     * Serial merge function
+     * @param list - reference to list to merge
+     * @param low - index representing the lower bound
+     * @param count - number of array elements to sort after the low index
      * @param direction - int representing whether to sort ascending or descending
      *                  1 for ascending
      *                  0 for descending
