@@ -6,7 +6,7 @@ The main program is located in the src directory. Java version 1.8 is required.
 Name:  
     BitonicSort - sorts an array of random doubles using the bitonic sort algorithm  
 
-Synopsis 
+Synopsis   
     BitonicSort N R [OPTIONS]  
 
 Description  
